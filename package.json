@@ -1,0 +1,32 @@
+{
+  "name": "decode-binary-bot",
+  "version": "1.0.0",
+  "description": "A reddit bot to decode binary",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [
+    "ascii",
+    "binary",
+    "bot",
+    "decode",
+    "reddit"
+  ],
+  "author": "Shreyas Minocha",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^6.0.0",
+    "snoostorm": "0.0.5",
+    "snoowrap": "^1.15.2"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shreyasminocha/decode-binary-bot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shreyasminocha/decode-binary-bot/issues"
+  },
+  "homepage": "https://github.com/shreyasminocha/decode-binary-bot#readme"
+}
