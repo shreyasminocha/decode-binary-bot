@@ -15,13 +15,13 @@ const client = new Snoostorm(new Snoowrap({
 const comments = client.CommentStream({
     subreddit: 'all',
     results: 100,
-    pollTime: 5000
+    pollTime: 2000
 });
 
 const devUserName = 'ShreyasMinocha';
 const botNotice = `\n\n^I ^am ^a ^bot. ^If ^I'm ^doing ^something ^silly, ^please ^PM [^the ^guy ^who ^programmed ^me ](https://reddit.com/user/${devUserName})`;
 
-const isBinaryAscii = /(?:[01]{8} )+/;
+const isBinaryAscii = /^(?:[01]{8} )+$/g;
 
 comments.on('comment', (comment) => {
     const body = comment.body.trim() + ' ';
