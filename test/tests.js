@@ -3,11 +3,36 @@
 import test from 'ava';
 import app from '../app.js';
 
-test('Decodes delimited strings', t => {
+test('Loads credentials', t => {
+    const credentials = app.credentials;
+    const properties = [
+        'CLIENT_ID',
+        'CLIENT_SECRET',
+        'REDDIT_USER',
+        'REDDIT_PASS'
+    ];
+
+    for (let propertyName of properties) {
+        t.truthy(credentials[propertyName]);
+        t.is(typeof credentials[propertyName], 'string');
+        t.not(credentials[propertyName], '');
+    }
+});
+
+test('Creates a Snoostrom client', t => {
+    t.true(app.client instanceof require('snoostorm'));
+});
+
+test('Creates a valid comment stream', t => {
+    t.true(app.comments instanceof require('events'));
+    t.true('comment' in app.comments._events);
+});
+
+test.serial('Decodes delimited strings', t => {
     t.is(app.decode('01110000 01100001 01110011 01110011'), 'pass');
 });
 
-test('Decodes non-delimited strings', t => {
+test.serial('Decodes non-delimited strings', t => {
     t.is(app.decode('01110000011000010111001101110011'), 'pass');
 });
 
@@ -33,12 +58,9 @@ test('Fails on empty string', t => {
 });
 
 test('Throws `TypeError` on non-string parameters', t => {
-    t.throws(() => app.decode(null), TypeError);
-    t.throws(() => app.decode(undefined), TypeError);
-    t.throws(() => app.decode(NaN), TypeError);
-    t.throws(() => app.decode(true), TypeError);
-    t.throws(() => app.decode(false), TypeError);
-    t.throws(() => app.decode(10101010), TypeError);
-    t.throws(() => app.decode([]), TypeError);
-    t.throws(() => app.decode({}), TypeError);
+    const nonStringTypes = [null, undefined, NaN, true, false, 10101010, [], {}];
+
+    for (let type of nonStringTypes) {
+        t.throws(() => app.decode(type), TypeError);
+    }
 });

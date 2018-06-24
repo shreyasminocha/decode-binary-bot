@@ -1,15 +1,15 @@
-require('dotenv').config();
+'use strict';
 
 const Snoowrap = require('snoowrap');
 const Snoostorm = require('snoostorm');
-const env = process.env;
+const credentials = require('dotenv').config().parsed;
 
 const client = new Snoostorm(new Snoowrap({
-    userAgent: env.REDDIT_USER,
-    clientId: env.CLIENT_ID,
-    clientSecret: env.CLIENT_SECRET,
-    username: env.REDDIT_USER,
-    password: env.REDDIT_PASS
+    userAgent: credentials.REDDIT_USER,
+    clientId: credentials.CLIENT_ID,
+    clientSecret: credentials.CLIENT_SECRET,
+    username: credentials.REDDIT_USER,
+    password: credentials.REDDIT_PASS
 }));
 
 const comments = client.CommentStream({
@@ -30,17 +30,17 @@ comments.on('comment', (comment) => {
     }
 });
 
-const isDecodable = /^(?:[01]{8} )+$/g;
-const isDecodableNoSpaces = /^[01]+$/g;
+const delimitedBinary = /^(?:[01]{8} )+$/g;
+const nonDelimitedBinary = /^(?:[01]{8})+$/g;
 const byteRegex = /[01]{8}/gm;
 
 function decode(string) {
     string = string.trim();
     let bytes = '';
 
-    if (isDecodable.test(string + ' ')) {
+    if (delimitedBinary.test(string + ' ')) {
         bytes = (string + ' ').match(byteRegex);
-    } else if(isDecodableNoSpaces.test(string) && string.length % 8 == 0) {
+    } else if(nonDelimitedBinary.test(string)) {
         bytes = string.match(byteRegex);
     }
 
@@ -52,8 +52,14 @@ function decode(string) {
 }
 
 function decodeBytes(bytes) {
-    return bytes.reduce((accumulator, byte) => accumulator + String.fromCharCode(parseInt(byte, 2)),  '');
+    return bytes.reduce((accumulator, byte) => {
+        return accumulator + String.fromCharCode(parseInt(byte, 2));
+    },  '');
 }
 
-
-module.exports = {decode};
+module.exports = {
+    credentials,
+    client,
+    comments,
+    decode
+};
