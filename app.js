@@ -23,9 +23,9 @@ const botNotice = `\n\n^I ^am ^a ^bot. ^If ^I'm ^doing ^something ^silly, ^pleas
 
 comments.on('comment', (comment) => {
     const body = comment.body.trim();
-    let translated = decode(comment.body);
+    let translated = decode(body);
 
-    if (decode(translated) !== '') {
+    if (translated !== '') {
         comment.reply(`That translates to: "${translated}". ${botNotice}`);
     }
 });
