@@ -49,6 +49,13 @@ test('Fails on incomplete bytes (non-delimited)', t => {
     t.is(app.decode('011100000110000101110011011100101'), '');
 });
 
+test('Fails on strictly less than three bytes', t => {
+    t.is(app.decode('01101000 01101001'), '');
+    t.is(app.decode('01101001'), '');
+
+    t.not(app.decode('01101000 01101001 01101001'), '');
+});
+
 test('Fails on non-binary', t => {
     t.is(app.decode('clearly not binary'), '');
 });

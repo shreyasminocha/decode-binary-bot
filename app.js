@@ -30,13 +30,13 @@ comments.on('comment', (comment) => {
     }
 });
 
-const delimitedBinary = /^(?:[01]{8} )+$/g;
-const nonDelimitedBinary = /^(?:[01]{8})+$/g;
+const delimitedBinary = /^(?:[01]{8} ){3,}$/gm;
+const nonDelimitedBinary = /^(?:[01]{8}){3,}$/gm;
 const byteRegex = /[01]{8}/gm;
 
 function decode(string) {
     string = string.trim();
-    let bytes = '';
+    let bytes;
 
     if (delimitedBinary.test(string + ' ')) {
         bytes = (string + ' ').match(byteRegex);
