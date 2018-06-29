@@ -19,7 +19,8 @@
   "dependencies": {
     "dotenv": "^6.0.0",
     "snoostorm": "0.0.5",
-    "snoowrap": "^1.15.2"
+    "snoowrap": "^1.15.2",
+    "utf-8": "^2.0.0"
   },
   "devDependencies": {
     "ava": "^0.25.0"

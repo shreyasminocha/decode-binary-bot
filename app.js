@@ -1,5 +1,6 @@
 'use strict';
 
+const utf = require('utf-8');
 const Snoowrap = require('snoowrap');
 const Snoostorm = require('snoostorm');
 const credentials = require('dotenv').config().parsed;
@@ -30,11 +31,12 @@ comments.on('comment', (comment) => {
     }
 });
 
-const delimitedBinary = /^(?:[01]{8} ){3,}$/gm;
-const nonDelimitedBinary = /^(?:[01]{8}){3,}$/gm;
-const byteRegex = /[01]{8}/gm;
 
 function decode(string) {
+    const delimitedBinary = /^(?:[01]{8} ){3,}$/gm;
+    const nonDelimitedBinary = /^(?:[01]{8}){3,}$/gm;
+    const byteRegex = /[01]{8}/gm;
+
     string = string.trim();
     let bytes;
 
@@ -52,9 +54,7 @@ function decode(string) {
 }
 
 function decodeBytes(bytes) {
-    return bytes.reduce((accumulator, byte) => {
-        return accumulator + String.fromCharCode(parseInt(byte, 2));
-    },  '');
+    return utf.getStringFromBytes(bytes.map(byte => parseInt(byte, 2)));
 }
 
 module.exports = {

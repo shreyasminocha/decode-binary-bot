@@ -28,16 +28,24 @@ test('Creates a valid comment stream', t => {
     t.true('comment' in app.comments._events);
 });
 
-test.serial('Decodes delimited strings', t => {
+test('Decodes delimited strings', t => {
     t.is(app.decode('01110000 01100001 01110011 01110011'), 'pass');
 });
 
-test.serial('Decodes non-delimited strings', t => {
+test('Decodes non-delimited strings', t => {
     t.is(app.decode('01110000011000010111001101110011'), 'pass');
 });
 
-test('Works with whitespace padding', t => {
+test('Decodes strings with whitespace padding', t => {
     t.is(app.decode('\t01110000 01100001 01110011 01110011 \n'), 'pass');
+});
+
+test('Decodes binary on separate line', t => {
+    t.is(app.decode('text \n01110000 01100001 01110011 01110011'), 'pass');
+});
+
+test('Decodes UTF-8', t => {
+    t.is(app.decode('00100100 11000010 10100010 11100010 10000010 10101100 11110000 10010000 10001101 10001000'), '$¢€𐍈');
 });
 
 test('Fails on incomplete bytes (delimited)', t => {
@@ -49,7 +57,11 @@ test('Fails on incomplete bytes (non-delimited)', t => {
     t.is(app.decode('011100000110000101110011011100101'), '');
 });
 
-test('Fails on strictly less than three bytes', t => {
+test('Fails on text followed by binary', t => {
+    t.is(app.decode('text text text 01110000 01100001 01110011'), '');
+});
+
+test('Fails on less than three bytes', t => {
     t.is(app.decode('01101000 01101001'), '');
     t.is(app.decode('01101001'), '');
 
