@@ -54,7 +54,17 @@ function decode(string) {
 }
 
 function decodeBytes(bytes) {
-    return utf.getStringFromBytes(bytes.map(byte => parseInt(byte, 2)));
+    let decoded;
+
+    try {
+        decoded = utf.getStringFromBytes(bytes.map(byte =>
+            parseInt(byte, 2)
+        ));
+    } catch(e) {
+        decoded = '';
+    }
+
+    return decoded;
 }
 
 module.exports = {

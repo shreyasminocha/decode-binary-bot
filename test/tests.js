@@ -57,6 +57,10 @@ test('Fails on incomplete bytes (non-delimited)', t => {
     t.is(app.decode('011100000110000101110011011100101'), '');
 });
 
+test('Fails on invalid UTF', t => {
+    t.is(app.decode('100000000000000000000000'), '');
+});
+
 test('Fails on text followed by binary', t => {
     t.is(app.decode('text text text 01110000 01100001 01110011'), '');
 });
