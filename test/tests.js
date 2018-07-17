@@ -15,7 +15,6 @@ test('Loads credentials', t => {
     for (let propertyName of properties) {
         t.truthy(credentials[propertyName]);
         t.is(typeof credentials[propertyName], 'string');
-        t.not(credentials[propertyName], '');
     }
 });
 

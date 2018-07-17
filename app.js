@@ -20,7 +20,7 @@ const comments = client.CommentStream({
 });
 
 const devUserName = 'ShreyasMinocha';
-const botNotice = `\n\n^I ^am ^a ^bot. ^If ^I'm ^doing ^something ^silly, ^please ^PM [^the ^guy ^who ^programmed ^me ](https://reddit.com/user/${devUserName})`;
+const botNotice = `\n\n^(I am a bot. If I'm doing something silly, please PM [the guy who programmed me](https://reddit.com/user/${devUserName}))`;
 
 comments.on('comment', (comment) => {
     const body = comment.body.trim();
@@ -33,20 +33,15 @@ comments.on('comment', (comment) => {
 
 
 function decode(string) {
-    const delimitedBinary = /^(?:[01]{8} ){3,}$/gm;
-    const nonDelimitedBinary = /^(?:[01]{8}){3,}$/gm;
+    const delimited = /^(?:[01]{8} ){3,}$/gm;
+    const nonDelimited = /^(?:[01]{8}){3,}$/gm;
     const byteRegex = /[01]{8}/gm;
 
     string = string.trim();
+
     let bytes;
-
-    if (delimitedBinary.test(string + ' ')) {
-        bytes = (string + ' ').match(byteRegex);
-    } else if(nonDelimitedBinary.test(string)) {
-        bytes = string.match(byteRegex);
-    }
-
-    if (bytes) {
+    if (delimited.test(string + ' ') || nonDelimited.test(string)) {
+        bytes = string.replace(/ /g, '').match(byteRegex);
         return decodeBytes(bytes);
     }
 
