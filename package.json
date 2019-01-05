@@ -32,5 +32,8 @@
   "bugs": {
     "url": "https://github.com/shreyasminocha/decode-binary-bot/issues"
   },
-  "homepage": "https://github.com/shreyasminocha/decode-binary-bot#readme"
+  "homepage": "https://github.com/shreyasminocha/decode-binary-bot#readme",
+  "engines": {
+    "node": ">=10.1.0"
+  }
 }

@@ -1,9 +1,16 @@
-'use strict';
-
+const fs = require('fs');
 const utf = require('utf-8');
 const Snoowrap = require('snoowrap');
 const Snoostorm = require('snoostorm');
 const credentials = require('dotenv').config().parsed;
+
+let ignoredUsers;
+
+fs.promises
+    .readFile('.userignore', { encoding: 'utf8' })
+    .then((contents) => {
+        ignoredUsers = contents.split('\n');
+    });
 
 const client = new Snoostorm(new Snoowrap({
     userAgent: credentials.REDDIT_USER,
@@ -24,9 +31,10 @@ const botNotice = `\n\n^(I am a bot. If I'm doing something silly, please PM [th
 
 comments.on('comment', (comment) => {
     const body = comment.body.trim();
-    let translated = decode(body);
+    const translated = decode(body);
+    const authorIsIgnored = ignoredUsers.includes(comment.author.name);
 
-    if (translated !== '') {
+    if (translated !== '' && !authorIsIgnored) {
         comment.reply(`That translates to: "${translated}". ${botNotice}`);
     }
 });
@@ -39,9 +47,8 @@ function decode(string) {
 
     string = string.trim();
 
-    let bytes;
-    if (delimited.test(string + ' ') || nonDelimited.test(string)) {
-        bytes = string.replace(/ /g, '').match(byteRegex);
+    if (delimited.test(`${string} `) || nonDelimited.test(string)) {
+        const bytes = string.replace(/ /g, '').match(byteRegex);
         return decodeBytes(bytes);
     }
 
@@ -52,10 +59,8 @@ function decodeBytes(bytes) {
     let decoded;
 
     try {
-        decoded = utf.getStringFromBytes(bytes.map(byte =>
-            parseInt(byte, 2)
-        ));
-    } catch(e) {
+        decoded = utf.getStringFromBytes(bytes.map(byte => parseInt(byte, 2)));
+    } catch (error) {
         decoded = '';
     }
 
