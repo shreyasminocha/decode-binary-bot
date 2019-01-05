@@ -26,8 +26,7 @@ const comments = client.CommentStream({
     pollTime: 2000
 });
 
-const devUserName = 'ShreyasMinocha';
-const botNotice = `\n\n^(I am a bot. If I'm doing something silly, please PM [the guy who programmed me](https://reddit.com/user/${devUserName}))`;
+const botNotice = '\n\n^(I am a bot. I\'m sorry if I ruined your surprise.)^';
 
 comments.on('comment', (comment) => {
     const body = comment.body.trim();
