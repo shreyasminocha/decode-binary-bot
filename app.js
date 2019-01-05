@@ -26,7 +26,7 @@ const comments = client.CommentStream({
     pollTime: 2000
 });
 
-const botNotice = '\n\n^(I am a bot. I\'m sorry if I ruined your surprise.)^';
+const botNotice = '\n\n^(I am a bot. I\'m sorry if I ruined your surprise.)';
 
 comments.on('comment', (comment) => {
     const body = comment.body.trim();
