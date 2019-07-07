@@ -5,7 +5,9 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "test": "ava"
+    "test": "ava",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "keywords": [
     "ascii",
@@ -20,7 +22,8 @@
     "dotenv": "^6.0.0",
     "snoostorm": "0.0.5",
     "snoowrap": "^1.15.2",
-    "utf-8": "^2.0.0"
+    "utf-8": "^2.0.0",
+    "snyk": "^1.192.3"
   },
   "devDependencies": {
     "ava": "^0.25.0"
@@ -35,5 +38,6 @@
   "homepage": "https://github.com/shreyasminocha/decode-binary-bot#readme",
   "engines": {
     "node": ">=10.1.0"
-  }
+  },
+  "snyk": true
 }
