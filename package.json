@@ -24,7 +24,7 @@
     "utf-8": "^2.0.0"
   },
   "devDependencies": {
-    "ava": "^0.25.0"
+    "ava": "^1.0.0"
   },
   "repository": {
     "type": "git",
