@@ -1,8 +1,8 @@
 import fs from 'fs';
-import utf from 'utf-8';
+import dotenv from 'dotenv';
 import Snoowrap from 'snoowrap';
 import snoostorm from 'snoostorm';
-import dotenv from 'dotenv';
+import decode from './util/decode.mjs';
 
 // Awaiting top level await 😭
 let ignoredUsers;
@@ -33,30 +33,3 @@ comments.on('item', (comment) => {
         comment.reply(`That translates to: "${translated}". ${botNotice}`);
     }
 });
-
-function decode(string) {
-    const delimited = /^(?:[01]{8} ){3,}$/gm;
-    const nonDelimited = /^(?:[01]{8}){3,}$/gm;
-    const byteRegex = /[01]{8}/gm;
-
-    string = string.trim();
-
-    if (delimited.test(`${string} `) || nonDelimited.test(string)) {
-        const bytes = string.replace(/ /g, '').match(byteRegex);
-        return decodeBytes(bytes);
-    }
-
-    return '';
-}
-
-function decodeBytes(bytes) {
-    let decoded;
-
-    try {
-        decoded = utf.getStringFromBytes(bytes.map(byte => parseInt(byte, 2)));
-    } catch (error) {
-        decoded = '';
-    }
-
-    return decoded;
-}
