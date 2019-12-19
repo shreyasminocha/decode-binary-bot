@@ -1,8 +1,10 @@
-const fs = require('fs');
-const utf = require('utf-8');
-const Snoowrap = require('snoowrap');
-const Snoostorm = require('snoostorm');
-const credentials = require('dotenv').config().parsed;
+import fs from 'fs';
+import utf from 'utf-8';
+import Snoowrap from 'snoowrap';
+import Snoostorm from 'snoostorm';
+import dotenv from 'dotenv';
+
+credentials = dotenv.config().parsed;
 
 let ignoredUsers;
 
@@ -66,7 +68,7 @@ function decodeBytes(bytes) {
     return decoded;
 }
 
-module.exports = {
+export default {
     credentials,
     client,
     comments,
