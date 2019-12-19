@@ -2,10 +2,10 @@
   "name": "decode-binary-bot",
   "version": "1.0.0",
   "description": "A reddit bot to decode binary",
-  "main": "app.js",
+  "main": "app.mjs",
   "type": "module",
   "scripts": {
-    "start": "node --experimental-modules app.js",
+    "start": "node --experimental-modules app.mjs",
     "test": "ava"
   },
   "keywords": [
