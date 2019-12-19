@@ -4,14 +4,7 @@ The code for a reddit bot that decodes binary. I did this as a noob project to f
 
 ## Note
 
-A `.env` file with configuration variables is required in the root of the project.
-
-```
-CLIENT_ID=**************
-CLIENT_SECRET=***************************
-REDDIT_USER=****
-REDDIT_PASS=****
-```
+A `.env` file with configuration variables is required in the root of the project. See `.env.example` for an example.
 
 ## License
 

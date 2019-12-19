@@ -1,36 +1,30 @@
 import fs from 'fs';
 import utf from 'utf-8';
 import Snoowrap from 'snoowrap';
-import Snoostorm from 'snoostorm';
+import snoostorm from 'snoostorm';
 import dotenv from 'dotenv';
 
-credentials = dotenv.config().parsed;
-
+// Awaiting top level await 😭
 let ignoredUsers;
-
 fs.promises
     .readFile('.userignore', { encoding: 'utf8' })
     .then((contents) => {
         ignoredUsers = contents.split('\n');
     });
 
-const client = new Snoostorm(new Snoowrap({
-    userAgent: credentials.REDDIT_USER,
-    clientId: credentials.CLIENT_ID,
-    clientSecret: credentials.CLIENT_SECRET,
-    username: credentials.REDDIT_USER,
-    password: credentials.REDDIT_PASS
-}));
+const credentials = dotenv.config().parsed;
+const client = new Snoowrap(credentials);
 
-const comments = client.CommentStream({
+const { CommentStream } = snoostorm;
+const comments = new CommentStream(client, {
     subreddit: 'all',
-    results: 100,
+    limit: 100,
     pollTime: 2000
 });
 
 const botNotice = '\n\n^(I am a bot. I\'m sorry if I ruined your surprise.)';
 
-comments.on('comment', (comment) => {
+comments.on('item', (comment) => {
     const body = comment.body.trim();
     const translated = decode(body);
     const authorIsIgnored = ignoredUsers.includes(comment.author.name);
@@ -39,7 +33,6 @@ comments.on('comment', (comment) => {
         comment.reply(`That translates to: "${translated}". ${botNotice}`);
     }
 });
-
 
 function decode(string) {
     const delimited = /^(?:[01]{8} ){3,}$/gm;
@@ -67,10 +60,3 @@ function decodeBytes(bytes) {
 
     return decoded;
 }
-
-export default {
-    credentials,
-    client,
-    comments,
-    decode
-};

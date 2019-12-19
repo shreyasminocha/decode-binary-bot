@@ -5,7 +5,7 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "start": "node app.js",
+    "start": "node --experimental-modules app.js",
     "test": "ava"
   },
   "keywords": [
@@ -19,7 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "dotenv": "^6.0.0",
-    "snoostorm": "1.3.0",
+    "snoostorm": "^1.3.0",
     "snoowrap": "^1.15.2",
     "utf-8": "^2.0.0"
   },
